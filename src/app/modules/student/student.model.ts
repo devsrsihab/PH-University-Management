@@ -2,7 +2,6 @@ import bcrypt from 'bcrypt';
 
 import { model, Schema } from 'mongoose';
 import { TGurdian, TLocalGurdian, TStudent, TUserName, StudentModel } from './student.interface';
-import config from '../../config';
 
 // username schema
 const UserNameSchema = new Schema<TUserName>({
@@ -72,7 +71,13 @@ const studentSchema = new Schema<TStudent, StudentModel>(
   {
     id: { type: String, required: true, unique: true },
     name: { type: UserNameSchema, required: true },
-    password: { type: String, required: true },
+
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      unique: true,
+      required: [true, 'User id is required'],
+    },
     gender: {
       type: String,
       required: true,
@@ -108,15 +113,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     guardian: { type: GurdianSchema, required: true },
     localGuardian: { type: LocalGurdianSchema },
     profileImg: { type: String },
-    isActive: {
-      type: String,
-      enum: ['active', 'inactive'],
-      default: 'active',
-    },
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    },
   },
   {
     toJSON: {
@@ -130,17 +126,6 @@ studentSchema.virtual('fullName').get(function () {
   return ` ${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
 });
 
-// pre middleware / hook: we will work ot it create() save()
-studentSchema.pre('save', async function (next) {
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
-  const user = this;
-  //hasing password
-  user.password = await bcrypt.hash(user.password, Number(config.bcrypt_salt_rounds));
-  // next step
-  next();
-  // eslint-disable-next-line no-console
-  console.log('Before saving document...');
-});
 
 // query middleware
 studentSchema.pre('find', function (next) {
@@ -159,25 +144,13 @@ studentSchema.pre('aggregate', function () {
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
 });
 
-// post middleware / hook: we will work ot it create() save()
-studentSchema.post('save', function (doc, next) {
-  doc.password = '';
-  next();
-});
+
 
 // custom static method
 studentSchema.statics.isUserExist = async function (id: string) {
   const existUser = await Student.findOne({ id });
   return existUser;
 };
-
-// custom instance methods
-// studentSchema.methods.isUserExist = async function(id:string) {
-//     const existUser = await Student.findOne({id})
-
-//     return existUser
-
-// }
 
 // student model
 export const Student = model<TStudent, StudentModel>('Student', studentSchema);
