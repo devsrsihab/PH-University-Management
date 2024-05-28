@@ -4,7 +4,7 @@ import sendResponse from '../../utils/sendResponse';
 import { AcademicSemeterServices } from './academicSemester.service';
 
 // crate acamdemic semester controller
-const crateAcademicSemester = catchAsync(async (req, res, next) => {
+const createAcademicSemester = catchAsync(async (req, res, next) => {
   const result = await AcademicSemeterServices.createAcademicSemesterToDB(req.body);
 
   sendResponse(res, {
@@ -15,4 +15,46 @@ const crateAcademicSemester = catchAsync(async (req, res, next) => {
   });
 });
 
-export const AcademicSemesterControllers = { crateAcademicSemester };
+// get all controller
+const getAcademicSemester = catchAsync(async (req, res, next) => {
+  const result = await AcademicSemeterServices.getAllAcademicSemestersFromDB();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Academic Semester Get  successfully',
+    data: result,
+  });
+});
+
+// find a sinlge academic semester
+const getSingleAcademicSemeste = catchAsync(async (req, res, next) => {
+  const { semesterId } = req.params;
+
+  const result = await AcademicSemeterServices.getSingleAcademicSemesterFromDB(semesterId);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Academic semester get successfully',
+    data: result,
+  });
+});
+
+// update the semesters
+const updateAcademicSemester = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const updateAbleData = req.body;
+  const result = await AcademicSemeterServices.updateAcademicSemesterToDB(id, updateAbleData);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Academic semester Update successfully',
+    data: result,
+  });
+});
+
+export const AcademicSemesterControllers = {
+  createAcademicSemester,
+  getAcademicSemester,
+  getSingleAcademicSemeste,
+  updateAcademicSemester,
+};
