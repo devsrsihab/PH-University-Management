@@ -1,8 +1,6 @@
 import { Schema, model } from 'mongoose';
-import { TAcademicSemester} from './academicSemester.interface';
+import { TAcademicSemester } from './academicSemester.interface';
 import { AcademicSemesterCode, AcademicSemesterName, Months } from './academicSemester.contants';
-
-
 
 const academicSemesterSchema = new Schema<TAcademicSemester>(
   {
@@ -35,6 +33,22 @@ const academicSemesterSchema = new Schema<TAcademicSemester>(
     timestamps: true,
   },
 );
+
+// check is adademic semster name exist with same year
+academicSemesterSchema.pre('save', async function (next) {
+  // check is semester exist in same year
+  const isSemesterExist = await AcademicSemester.findOne({
+    name: this.name,
+    year: this.year,
+  });
+
+  // is exist
+  if (isSemesterExist) {
+    throw new Error('Academic semester already exist');
+  }
+
+  next();
+});
 
 // make model
 export const AcademicSemester = model<TAcademicSemester>(
