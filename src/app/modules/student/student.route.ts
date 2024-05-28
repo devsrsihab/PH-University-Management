@@ -1,7 +1,12 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import { StudentController } from './student.controller';
 
 const router = express.Router();
+// make middlware
+const shenabahini = (req: Request, res: Response, next: NextFunction): void => {
+  console.log(req.body);
+  next();
+};
 
 router.get('/get-students', StudentController.getStudent);
 router.get('/get-student/:id', StudentController.getSingleStudent);
