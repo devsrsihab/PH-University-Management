@@ -69,13 +69,10 @@ const LocalGurdianSchema = new Schema<TLocalGurdian>({
 // student schema
 const studentSchema = new Schema<TStudent, StudentModel>(
   {
-    id: { type: String, required: true, unique: true },
     name: { type: UserNameSchema, required: true },
-
     user: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      unique: true,
       required: [true, 'User id is required'],
     },
     gender: {
@@ -87,6 +84,10 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       },
     },
     dateOfBirth: { type: String },
+    admissionSemester: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicSemester',
+    },
     email: {
       type: String,
       required: true,
@@ -126,7 +127,6 @@ studentSchema.virtual('fullName').get(function () {
   return ` ${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
 });
 
-
 // query middleware
 studentSchema.pre('find', function (next) {
   this.find({ isDeleted: { $ne: true } });
@@ -143,8 +143,6 @@ studentSchema.pre('findOne', function (next) {
 studentSchema.pre('aggregate', function () {
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
 });
-
-
 
 // custom static method
 studentSchema.statics.isUserExist = async function (id: string) {

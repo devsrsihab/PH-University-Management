@@ -1,12 +1,13 @@
-import config from "../../config";
-import { generateRandomId } from "../../utils/randomId";
-import { TStudent } from "../student/student.interface";
-import { Student } from "../student/student.model";
-import { TUser } from "./user.interface";
-import { User } from "./user.model";
+import config from '../../config';
+import { AcademicSemester } from '../academicSemester/academicSemester.model';
+import { TStudent } from '../student/student.interface';
+import { Student } from '../student/student.model';
+import { TUser } from './user.interface';
+import { User } from './user.model';
+import { generateStuentId } from './user.utils';
 
 // create student
-const createStudentToDB = async (password:string,studentData: TStudent) => {
+const createStudentToDB = async (password: string, payload: TStudent) => {
   // create a user object
   const userData: Partial<TUser> = {};
 
@@ -17,7 +18,12 @@ const createStudentToDB = async (password:string,studentData: TStudent) => {
   userData.role = 'student';
 
   // set manually generate id
-  userData.id = generateRandomId();
+
+  // academic semester
+  const admissionSemester = await AcademicSemester.findById(payload.admissionSemester);
+
+  userData.id = admissionSemester ? await generateStuentId(admissionSemester) : '';
+  console.log(userData);
 
   // create a user
   const newUser = await User.create(userData);
@@ -25,17 +31,16 @@ const createStudentToDB = async (password:string,studentData: TStudent) => {
   // if created the user successfully then create the student
   if (Object.keys(newUser).length) {
     // set user id in student id field
-    studentData.id = newUser.id; // embating id
+    payload.id = newUser.id; // embating id
     // set student user field data
-    studentData.user = newUser._id; // reference id
+    payload.user = newUser._id; // reference id
 
-    const newStudent = await Student.create(studentData);
+    const newStudent = await Student.create(payload);
     return newStudent;
   }
 
   return newUser;
 };
-
 
 export const UserServices = {
   createStudentToDB,
