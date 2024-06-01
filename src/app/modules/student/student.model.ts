@@ -69,6 +69,11 @@ const LocalGurdianSchema = new Schema<TLocalGurdian>({
 // student schema
 const studentSchema = new Schema<TStudent, StudentModel>(
   {
+    id: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     name: { type: UserNameSchema, required: true },
     user: {
       type: Schema.Types.ObjectId,
@@ -87,6 +92,10 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     admissionSemester: {
       type: Schema.Types.ObjectId,
       ref: 'AcademicSemester',
+    },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicDepartment',
     },
     email: {
       type: String,
@@ -114,6 +123,10 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     guardian: { type: GurdianSchema, required: true },
     localGuardian: { type: LocalGurdianSchema },
     profileImg: { type: String },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     toJSON: {
@@ -122,10 +135,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
   },
 );
 
-// mongoose virtual field
-studentSchema.virtual('fullName').get(function () {
-  return ` ${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
-});
 
 // query middleware
 studentSchema.pre('find', function (next) {

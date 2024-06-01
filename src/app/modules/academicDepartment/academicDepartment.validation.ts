@@ -6,8 +6,8 @@ const CreateAcademicDepertmentSchemaValidation = z.object({
     name: z.string({
       invalid_type_error: 'Academic Depertment must be string',
     }),
-    academicDepertment: z.string({
-      invalid_type_error: 'Academic Depertment must be string',
+    academicFaculty: z.string({
+      invalid_type_error: 'Academic Faculty must be string',
     }),
   }),
 });
@@ -20,9 +20,9 @@ const UpdateAcademicDepertmentSchemaValidation = z.object({
         invalid_type_error: 'Academic Depertment must be string',
       })
       .optional(),
-    academicDepertment: z
+    academicFaculty: z
       .string({
-        invalid_type_error: 'Academic Depertment must be string',
+        invalid_type_error: 'Academic Faculty must be string',
       })
       .optional(),
   }),

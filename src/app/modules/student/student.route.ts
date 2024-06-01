@@ -8,8 +8,9 @@ const shenabahini = (req: Request, res: Response, next: NextFunction): void => {
   next();
 };
 
-router.get('/get-students', StudentController.getStudent);
+router.get('/', StudentController.getStudent);
 router.get('/get-student/:id', StudentController.getSingleStudent);
-router.delete('/delete-student/:id', StudentController.deleteStudent);
+router.patch('/:studentId', StudentController.updateStudent);
+router.delete('/:id', StudentController.deleteStudent);
 
 export const StudentRoute = router;
