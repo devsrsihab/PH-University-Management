@@ -1,8 +1,8 @@
-import { ZodError, ZodIssue } from "zod";
-import { TErrorSources } from "../interface/error";
+import { ZodError, ZodIssue } from 'zod';
+import { TErrorSources, TGenericeErrorResponse } from '../interface/error';
 
 // hanlde zod error
-const hanldeZodError = (err: ZodError) => {
+const hanldeZodError = (err: ZodError): TGenericeErrorResponse => {
   // error sources
   const errorSources: TErrorSources = err.issues.map((issue: ZodIssue) => {
     return {
@@ -20,5 +20,4 @@ const hanldeZodError = (err: ZodError) => {
   };
 };
 
-
-export default hanldeZodError
+export default hanldeZodError;

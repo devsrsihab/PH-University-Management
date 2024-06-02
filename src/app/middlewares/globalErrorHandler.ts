@@ -4,6 +4,8 @@ import { TErrorSources } from '../interface/error';
 import config from '../config';
 import hanldeZodError from '../errors/handleZodError';
 import handleValidationError from '../errors/handleValidationError';
+import handleCastError from '../errors/handleCastError';
+import handleDuplicateError from '../errors/handleDuplicateError';
 
 // global errro handling
 const globalErrHandler: ErrorRequestHandler = (err: any, req, res, next) => {
@@ -23,8 +25,24 @@ const globalErrHandler: ErrorRequestHandler = (err: any, req, res, next) => {
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSources = simplifiedError?.errorSources;
-  } else if (err.name === 'ValidationError') {
+  }
+  // if mongoose validation error
+  else if (err.name === 'ValidationError') {
     const simplifiedError = handleValidationError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
+  }
+  // if mongoose CastError
+  else if (err.name === 'CastError') {
+    const simplifiedError = handleCastError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
+  }
+  // if mongoose duplicate
+  else if (err.code === 11000) {
+    const simplifiedError = handleDuplicateError(err);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSources = simplifiedError?.errorSources;

@@ -23,15 +23,15 @@ const academicFacultySchema = new Schema<TAcademicDepartment>(
 
 
 // pre middlware hook
-academicFacultySchema.pre('save', async function (next) {
-  const isDepartmentExist = await AcademicDepartment.findOne({ name: this.name });
+// academicFacultySchema.pre('save', async function (next) {
+//   const isDepartmentExist = await AcademicDepartment.findOne({ name: this.name });
 
-  if (isDepartmentExist) {
-    throw new AppError(httpStatus.CONFLICT,'Department Already Exist');
-  }
+//   if (isDepartmentExist) {
+//     throw new AppError(httpStatus.CONFLICT,'Department Already Exist');
+//   }
 
-  next();
-});
+//   next();
+// });
 
 // query middleware
 academicFacultySchema.pre('findOneAndUpdate', async function (next) {
