@@ -46,7 +46,6 @@ const createStudentToDB = async (password: string, payload: TStudent) => {
 
     // set user id in student id field
     payload.id = newUser[0].id; // embating id
-    console.log(payload.id);
     // set student user field data
     payload.user = newUser[0]._id; // reference id
 
@@ -63,6 +62,7 @@ const createStudentToDB = async (password: string, payload: TStudent) => {
   } catch (error) {
     await session.abortTransaction();
     await session.endSession();
+    throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create student');
   }
 };
 

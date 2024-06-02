@@ -8,7 +8,7 @@ const router = express.Router();
 // create academic semester
 router.post(
   '/create-academic-department',
-  validateRequest(AcademicDepartmentValidation.CreateAcademicDepertmentSchemaValidation),
+  // validateRequest(AcademicDepartmentValidation.CreateAcademicDepertmentSchemaValidation),
   AcademicDepartmentControllers.createAcademicDepartment,
 );
 // get all departments
