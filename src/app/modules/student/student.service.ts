@@ -11,15 +11,15 @@ import QueryBuilder from '../../builder/QueryBuilder';
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
   const studentQuery = new QueryBuilder(
     Student.find()
-        .populate('admissionSemester')
-        .populate({
-          path: 'academicDepartment',
-          populate: {
-            path: 'academicFaculty',
-          },
-        }),
-      query,
-    )
+      .populate('admissionSemester')
+      .populate({
+        path: 'academicDepartment',
+        populate: {
+          path: 'academicFaculty',
+        },
+      }),
+    query,
+  )
     .search(searchAbleFields)
     .filter()
     .sort()
@@ -43,8 +43,6 @@ const getSingleStudentFromDB = async (id: string) => {
     });
   return result;
 };
-
-
 // update student
 const updateStudentToDB = async (id: string, payload: Partial<TStudent>) => {
   const { name, guardian, localGuardian, ...remainingStudentData } = payload;
