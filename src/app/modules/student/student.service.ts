@@ -49,7 +49,7 @@ const getSingleStudentFromDB = async (id: string) => {
 const updateStudentToDB = async (id: string, payload: Partial<TStudent>) => {
   const { name, guardian, localGuardian, ...remainingStudentData } = payload;
 
-  const modifiedUpdatedData: Record<string, unknown> = {};
+  const modifiedUpdatedData: Record<string, unknown> = { ...remainingStudentData };
 
   // dynamic loop for name
   if (name && Object.keys(name).length) {

@@ -29,7 +29,22 @@ const getSingleFacultie = catchAsync(async (req, res, next) => {
   });
 });
 
+// update student controller
+const updateFaculty = catchAsync(async (req, res, next) => {
+  const { facultyId } = req.params;
+  const {faculty} = req.body;
+  const result = await FacultyServices.updateFacultyToDB(facultyId, faculty);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'faculty updated successfully',
+    data: result || 'no data found',
+  });
+});
+
 export const FacultyController = {
   getFaculties,
   getSingleFacultie,
+  updateFaculty,
 };

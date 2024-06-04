@@ -45,10 +45,10 @@ const getSingleFacultieFromDB = async (id: string) => {
 };
 
 // update student
-const updateStudentToDB = async (id: string, payload: Partial<TFaculty>) => {
-  const { name, ...remainingStudentData } = payload;
+const updateFacultyToDB = async (id: string, payload: Partial<TFaculty>) => {
+  const { name, ...remainingFacultyData } = payload;
 
-  const modifiedUpdatedData: Record<string, unknown> = {};
+  const modifiedUpdatedData: Record<string, unknown> = { ...remainingFacultyData };
 
   // dynamic loop for name
   if (name && Object.keys(name).length) {
@@ -107,6 +107,6 @@ const deleteStudentFromDB = async (id: string) => {
 export const FacultyServices = {
   getAllFacultiesFromDB,
   getSingleFacultieFromDB,
-  updateStudentToDB,
+  updateFacultyToDB,
   deleteStudentFromDB,
 };
