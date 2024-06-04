@@ -43,6 +43,8 @@ const getSingleStudentFromDB = async (id: string) => {
     });
   return result;
 };
+
+
 // update student
 const updateStudentToDB = async (id: string, payload: Partial<TStudent>) => {
   const { name, guardian, localGuardian, ...remainingStudentData } = payload;

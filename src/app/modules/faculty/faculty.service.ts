@@ -8,7 +8,7 @@ import httpStatus from "http-status";
 import { User } from "../user/user.model";
 
 
-// get all students
+// get all faculties
 const getAllFacultiesFromDB = async (query: Record<string, unknown>) => {
   const facultyQuery = new QueryBuilder(
     Faculty.find()
@@ -32,8 +32,7 @@ const getAllFacultiesFromDB = async (query: Record<string, unknown>) => {
 };
 
 // get single student
-const getSingleStudentFromDB = async (id: string) => {
-  // const result = await Student.findOne({ id });
+const getSingleFacultieFromDB = async (id: string) => {
   const result = await Faculty.findOne({ id })
     .populate('academicFaculty')
     .populate({
@@ -107,7 +106,7 @@ const deleteStudentFromDB = async (id: string) => {
 
 export const FacultyServices = {
   getAllFacultiesFromDB,
-  getSingleStudentFromDB,
+  getSingleFacultieFromDB,
   updateStudentToDB,
   deleteStudentFromDB,
 };
