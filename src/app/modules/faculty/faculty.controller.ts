@@ -32,7 +32,7 @@ const getSingleFacultie = catchAsync(async (req, res, next) => {
 // update student controller
 const updateFaculty = catchAsync(async (req, res, next) => {
   const { facultyId } = req.params;
-  const {faculty} = req.body;
+  const { faculty } = req.body;
   const result = await FacultyServices.updateFacultyToDB(facultyId, faculty);
 
   sendResponse(res, {
@@ -43,8 +43,22 @@ const updateFaculty = catchAsync(async (req, res, next) => {
   });
 });
 
+// delete faculty
+const deleteFaculty = catchAsync(async (req, res, next) => {
+  const { facultyId } = req.params;
+  const result = FacultyServices.deleteFacultyFromDB(facultyId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'faculty deleted successfully',
+    data: result,
+  });
+});
+
 export const FacultyController = {
   getFaculties,
   getSingleFacultie,
   updateFaculty,
+  deleteFaculty,
 };

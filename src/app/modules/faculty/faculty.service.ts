@@ -44,7 +44,7 @@ const getSingleFacultieFromDB = async (id: string) => {
   return result;
 };
 
-// update student
+// update faculty
 const updateFacultyToDB = async (id: string, payload: Partial<TFaculty>) => {
   const { name, ...remainingFacultyData } = payload;
 
@@ -65,22 +65,22 @@ const updateFacultyToDB = async (id: string, payload: Partial<TFaculty>) => {
   return result;
 };
 
-// get single student
-const deleteStudentFromDB = async (id: string) => {
+// get single faculty
+const deleteFacultyFromDB = async (id: string) => {
   const session = await mongoose.startSession();
 
   try {
     // transaction
     session.startTransaction();
 
-    const deletedStudent = await Faculty.findOneAndUpdate(
+    const deletedFaculty = await Faculty.findOneAndUpdate(
       { id },
       { isDeleted: true },
       { new: true, session },
     );
 
-    if (!deletedStudent) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete Student');
+    if (!deletedFaculty) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete faculty');
     }
 
     // deleted user
@@ -96,10 +96,11 @@ const deleteStudentFromDB = async (id: string) => {
 
     await session.commitTransaction();
     await session.endSession();
-    return deletedStudent;
+    return deletedFaculty;
   } catch (error) {
     await session.abortTransaction();
     await session.endSession();
+    console.log(error)
     throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete Student');
   }
 };
@@ -108,5 +109,5 @@ export const FacultyServices = {
   getAllFacultiesFromDB,
   getSingleFacultieFromDB,
   updateFacultyToDB,
-  deleteStudentFromDB,
+  deleteFacultyFromDB,
 };

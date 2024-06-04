@@ -136,7 +136,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
 );
 
 
-// query middleware
+// query middleware show only where isDelete false
 studentSchema.pre('find', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();

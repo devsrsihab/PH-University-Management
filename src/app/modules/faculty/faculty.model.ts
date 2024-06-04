@@ -80,6 +80,22 @@ const facultySchema = new Schema<TFaculty>(
   },
 );
 
+// query middleware show only where isDelete false
+facultySchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+// query middlware for findone show only where isDelete false
+facultySchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+// aggregate middleware show only where isDelete false
+facultySchema.pre('aggregate', function () {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+});
 
 // export faculty model 
 export const Faculty = model<TFaculty>('Faculty', facultySchema);
