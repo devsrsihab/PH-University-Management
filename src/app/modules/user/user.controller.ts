@@ -9,7 +9,6 @@ const createStudent = catchAsync(async (req, res, next) => {
   const { password, student: studetnData } = req.body;
   // const zodParseData = UserSchemaValidation.parse(studetnData);
   const result = await UserServices.createStudentToDB(password, studetnData);
-  console.log(result);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -18,6 +17,20 @@ const createStudent = catchAsync(async (req, res, next) => {
   });
 });
 
+// student create controller
+const createFaculty = catchAsync(async (req, res, next) => {
+  const { password, faculty: studetnData } = req.body;
+  // const zodParseData = UserSchemaValidation.parse(studetnData);
+  const result = await UserServices.createFacultyToDB(password, studetnData);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Faculty created successfully',
+    data: result,
+  });
+});
+
 export const UserController = {
   createStudent,
+  createFaculty,
 };

@@ -4,22 +4,22 @@ import AppError from '../../errors/appError';
 import httpStatus from 'http-status';
 import { User } from '../user/user.model';
 import { TStudent } from './student.interface';
-import QueryBuilder from '../../builder/queryBuilder';
 import { searchAbleFields } from './student.constant';
+import QueryBuilder from '../../builder/QueryBuilder';
 
 // get all students
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
   const studentQuery = new QueryBuilder(
     Student.find()
-      .populate('admissionSemester')
-      .populate({
-        path: 'academicDepartment',
-        populate: {
-          path: 'academicFaculty',
-        },
-      }),
-    query,
-  )
+        .populate('admissionSemester')
+        .populate({
+          path: 'academicDepartment',
+          populate: {
+            path: 'academicFaculty',
+          },
+        }),
+      query,
+    )
     .search(searchAbleFields)
     .filter()
     .sort()
@@ -43,6 +43,8 @@ const getSingleStudentFromDB = async (id: string) => {
     });
   return result;
 };
+
+
 // update student
 const updateStudentToDB = async (id: string, payload: Partial<TStudent>) => {
   const { name, guardian, localGuardian, ...remainingStudentData } = payload;
