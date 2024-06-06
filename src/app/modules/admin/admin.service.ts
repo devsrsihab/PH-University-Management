@@ -9,17 +9,7 @@ import { TAdmin } from './admin.interface';
 
 // get all admins
 const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
-  const adminQuery = new QueryBuilder(
-    Admin.find()
-      .populate('academicAdmin')
-      .populate({
-        path: 'academicDepartment',
-        populate: {
-          path: 'academicAdmin',
-        },
-      }),
-    query,
-  )
+  const adminQuery = new QueryBuilder(Admin.find().populate('user'), query)
     .search(searchAbleFields)
     .filter()
     .sort()
@@ -32,14 +22,7 @@ const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
 
 // get single student
 const getSingleAdminFromDB = async (id: string) => {
-  const result = await Admin.findOne({ id })
-    .populate('academicAdmin')
-    .populate({
-      path: 'academicDepartment',
-      populate: {
-        path: 'academicAdmin',
-      },
-    });
+  const result = await Admin.findOne({ id }).populate('user');
   return result;
 };
 
