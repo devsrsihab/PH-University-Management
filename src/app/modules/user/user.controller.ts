@@ -17,7 +17,7 @@ const createStudent = catchAsync(async (req, res, next) => {
   });
 });
 
-// student create controller
+// create faculty controller
 const createFaculty = catchAsync(async (req, res, next) => {
   const { password, faculty: studetnData } = req.body;
   // const zodParseData = UserSchemaValidation.parse(studetnData);
@@ -30,7 +30,21 @@ const createFaculty = catchAsync(async (req, res, next) => {
   });
 });
 
+
+// create faculty controller
+const createAdmin = catchAsync(async (req, res, next) => {
+  const { password, admin: studetnData } = req.body;
+  const result = await UserServices.createAdminToDB(password, studetnData);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Admin created successfully',
+    data: result,
+  });
+});
+
 export const UserController = {
   createStudent,
   createFaculty,
+  createAdmin,
 };
