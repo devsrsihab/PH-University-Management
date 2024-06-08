@@ -1,25 +1,25 @@
 import { TInterface } from './starter.interface';
 import { ModelSchema } from './starter.model';
 
-// create academic semester
+// create 
 const createToDB = async (payload: TInterface) => {
   const result = await ModelSchema.create(payload);
   return result;
 };
 
-// get all all semesters
+// get all 
 const getAllFromDB = async () => {
   const result = await ModelSchema.find();
   return result;
 };
 
-// get single semesters
+// get single 
 const getSingleFromDB = async (id: string) => {
   const result = await ModelSchema.findById(id);
   return result;
 };
 
-// update semesters
+// update 
 const updateToDB = async (id: string, payload: TInterface) => {
   const result = await ModelSchema.findByIdAndUpdate({ _id: id }, payload, { new: true });
   return result;

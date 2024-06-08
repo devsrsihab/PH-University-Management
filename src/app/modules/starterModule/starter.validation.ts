@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
-// studentSchema validation
+// create
 const CreateSchemaValidation = z.object({
   body: z.object({}),
 });
 
-// update validation
+// update
 const UpdateSchemaValidation = z.object({
   body: z.object({}),
 });

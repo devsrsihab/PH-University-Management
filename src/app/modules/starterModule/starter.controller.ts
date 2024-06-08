@@ -3,7 +3,7 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { Services } from './starter.service';
 
-// crate
+// create
 const create = catchAsync(async (req, res, next) => {
   const result = await Services.createToDB(req.body);
 
@@ -26,7 +26,7 @@ const getAll = catchAsync(async (req, res, next) => {
   });
 });
 
-// sinlge
+// single
 const getSingle = catchAsync(async (req, res, next) => {
   const { facultyId } = req.params;
 

@@ -5,16 +5,16 @@ import { Controllers } from './starter.controller';
 
 const router = express.Router();
 
-// create academic semester
+// create 
 router.post(
   '/create-academic-faculty',
   validateRequest(Validation.CreateSchemaValidation),
   Controllers.create,
 );
-// get all facultys
+// get all 
 router.get('/', Controllers.getAll);
-// get single academic faculty
+// get single 
 router.get('/:Id', Controllers.getSingle);
-// update facultys
+// update 
 router.patch('/:Id', validateRequest(Validation.UpdateSchemaValidation), Controllers.update);
-export const AcademicFacultyRoute = router;
+export const Route = router;
