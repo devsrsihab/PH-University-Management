@@ -8,11 +8,21 @@ import { Faculty } from '../faculty/faculty.model';
 import checkExistenceAndThrowError from '../../utils/checkExistenceAndThrowError ';
 import AppError from '../../errors/appError';
 import httpStatus from 'http-status';
+import { hasTimeConflict } from './offeredCourse.utiles';
 
 // create
 const createOfferedCourseToDB = async (payload: TOfferedCourse) => {
-  const { semesterRegistration, academicDepartment, academicFaculty, course, faculty, section } =
-    payload;
+  const {
+    semesterRegistration,
+    academicDepartment,
+    academicFaculty,
+    course,
+    faculty,
+    section,
+    days,
+    starTime,
+    endTime,
+  } = payload;
 
   const isExistSemesterRegistration = await checkExistenceAndThrowError(
     SemesterRegistration,
@@ -61,6 +71,29 @@ const createOfferedCourseToDB = async (payload: TOfferedCourse) => {
       'Offered Course with same section is already exist ',
     );
   }
+
+  // check faculty shedule
+  const assignedShedules = await OfferedCourse.find({
+    semesterRegistration,
+    faculty,
+    days: { $in: days },
+  }).select('days starTime endTime');
+
+  console.log('data', assignedShedules);
+
+  const newShedule = {
+    starTime,
+    endTime,
+    days,
+  };
+
+  if (hasTimeConflict(assignedShedules, newShedule)) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'This Faculty is not availabe at that time Choose other time or date ',
+    );
+  }
+
   const result = await OfferedCourse.create({ ...payload, academicSemester });
   return result;
 };
