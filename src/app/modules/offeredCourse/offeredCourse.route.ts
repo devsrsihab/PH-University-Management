@@ -13,9 +13,9 @@ router.post('/create',
 // get all
 router.get('/', OfferedCourseControllers.getAllOfferedCourse);
 // get single
-router.get('/:Id', OfferedCourseControllers.getSingleOfferedCourse);
+router.get('/:id', OfferedCourseControllers.getSingleOfferedCourse);
 // update
-router.patch('/:Id',
+router.patch('/:id',
   validateRequest(OfferedCourseValidation.UpdateOfferedCourseSchemaValidation),
   OfferedCourseControllers.updateOfferedCourse,
 );

@@ -1,7 +1,7 @@
 import { TShedule } from './offeredCourse.interface';
 
 export const hasTimeConflict = (assginedShedules: TShedule[], newShedule: TShedule) => {
-  // loop the assignedShedules for checking is there any conlifct time
+
   for (const shedule of assginedShedules) {
     const existingStartTime = new Date(`1970-01-01T${shedule.starTime}`);
     const existingEndTime = new Date(`1970-01-01T${shedule.starTime}`);
