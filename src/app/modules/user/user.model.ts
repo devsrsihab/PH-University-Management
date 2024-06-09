@@ -1,9 +1,9 @@
 import { Schema, model } from 'mongoose';
-import { TUser } from './user.interface';
+import { TUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 
-const userSchema = new Schema<TUser>(
+const userSchema = new Schema<TUser, UserModel>(
   {
     id: {
       type: String,
@@ -54,8 +54,6 @@ userSchema.pre('save', async function (next) {
   user.password = await bcrypt.hash(user.password, Number(config.bcrypt_salt_rounds));
   // next step
   next();
-  // eslint-disable-next-line no-console
-  console.log('Before saving document...');
 });
 // post middleware / hook: we will work ot it create() save()
 userSchema.post('save', function (doc, next) {
@@ -63,5 +61,14 @@ userSchema.post('save', function (doc, next) {
   next();
 });
 
+// user exist cusotm static method
+userSchema.statics.isUserExistByCustomId = async function (id: string) {
+  return await User.findOne({ id });
+};
+// user exist cusotm static method
+userSchema.statics.isPasswordMatch = async function (plainTextPassword: string, hashedPassword:string) {
+  return await bcrypt.compare(plainTextPassword, hashedPassword);
+};
+
 // make model
-export const User = model<TUser>('User', userSchema);
+export const User = model<TUser, UserModel>('User', userSchema);
