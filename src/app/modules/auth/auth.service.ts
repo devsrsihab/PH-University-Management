@@ -1,9 +1,9 @@
+import Jwt from 'jsonwebtoken';
 import httpStatus from 'http-status';
 import AppError from '../../errors/appError';
-import checkExistenceAndThrowError from '../../utils/checkExistenceAndThrowError ';
 import { User } from '../user/user.model';
 import { TLoginUser } from './auth.interface';
-import bcrypt from 'bcrypt';
+import config from '../../config';
 
 // create
 const loginUser = async (payload: TLoginUser) => {
@@ -32,6 +32,21 @@ const loginUser = async (payload: TLoginUser) => {
   if (!isPasswordMatch) {
     throw new AppError(httpStatus.FORBIDDEN, 'Incorrect password');
   }
+
+  // jwt token
+  const jwtPayload = {
+    userId: user,
+    role: user?.role,
+  };
+
+  const accessToken = Jwt.sign(jwtPayload, config.jwt_access_secret as string, {
+    expiresIn: '10d',
+  });
+
+  return {
+    accessToken,
+    neetPassWord: user.needPasswordChange,
+  };
 };
 
 export const AuthServices = {
