@@ -5,6 +5,7 @@ import AppError from '../errors/appError';
 import httpStatus from 'http-status';
 import config from '../config';
 import { TUserRole } from '../modules/user/user.interface';
+import { User } from '../modules/user/user.model';
 
 // Middleware for authentication
 declare global {
@@ -26,22 +27,44 @@ const auth = (...requiredUserRole: TUserRole[]) => {
     }
 
     // Verify the token
-    jwt.verify(token, config.jwt_access_secret as string, (err, decoded) => {
-      if (err) {
-        throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized');
-      }
+    const decoded = jwt.verify(token, config.jwt_access_secret as string) as JwtPayload;
 
-      // user role checking
-      const role = (decoded as JwtPayload).role;
-      if (requiredUserRole && !requiredUserRole.includes(role)) {
-        throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized');
-        }
-        
-        console.log(requiredUserRole);
-      req.user = decoded as JwtPayload;
+    // user role checking
+    const { role, userId, iat } = decoded as JwtPayload;
+    const user = await User.isUserExistByCustomId(userId);
+    const isDeleted = user?.isDeleted;
+    const isUserBlocked = user?.status === 'blocked';
 
-      next();
-    });
+    // user exist
+    if (!user) {
+      throw new AppError(httpStatus.NOT_FOUND, 'User is Not Found');
+    }
+
+    // check deleted
+    if (isDeleted) {
+      throw new AppError(httpStatus.NOT_FOUND, 'User is deleted');
+    }
+
+    // check block
+    if (isUserBlocked) {
+      throw new AppError(httpStatus.NOT_FOUND, 'User is blocked');
+    }
+
+    // check the user issed password or jwt issued  time
+    if (
+      user.passwordChangedAt &&
+      await User.isJWTIssuedBeforePasswordChanged(user.passwordChangedAt, iat as number)
+    ) {
+      throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+    }
+
+    if (requiredUserRole && !requiredUserRole.includes(role)) {
+      throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+    }
+
+    req.user = decoded as JwtPayload;
+
+    next();
   });
 };
 

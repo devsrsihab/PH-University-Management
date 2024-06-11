@@ -8,6 +8,8 @@ const getFaculties = catchAsync(async (req, res) => {
   const query = req.query;
   const result = await FacultyServices.getAllFacultiesFromDB(query);
 
+  console.log(req.cookies)
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
