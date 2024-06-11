@@ -170,11 +170,14 @@ const createAdminToDB = async (password:string, payload: TAdmin) => {
     await session.endSession();
 
     return newAdmin;
-  } catch (error:any) {
+  } catch (error:unknown) {
     await session.abortTransaction();
     await session.endSession();
-    throw new AppError(httpStatus.BAD_REQUEST, error.message);
-  }
+if (error instanceof Error) {
+  throw new AppError(httpStatus.BAD_REQUEST, error.message);
+} else {
+  throw new AppError(httpStatus.BAD_REQUEST, 'Unknown error occurred');
+}  }
 };
 
 export const UserServices = {

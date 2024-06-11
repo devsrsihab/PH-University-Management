@@ -1,1 +1,3 @@
-export type TInterface = {};
+export type TInterface = {
+    name: string;
+};

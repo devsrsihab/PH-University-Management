@@ -4,7 +4,7 @@ import sendResponse from '../../utils/sendResponse';
 import { FacultyServices } from './faculty.service';
 
 // get all getFaculty conroller
-const getFaculties = catchAsync(async (req, res, next) => {
+const getFaculties = catchAsync(async (req, res) => {
   const query = req.query;
   const result = await FacultyServices.getAllFacultiesFromDB(query);
 
@@ -17,7 +17,7 @@ const getFaculties = catchAsync(async (req, res, next) => {
 });
 
 // get single faculty controller
-const getSingleFacultie = catchAsync(async (req, res, next) => {
+const getSingleFacultie = catchAsync(async (req, res) => {
   const { facultyId } = req.params;
   const result = await FacultyServices.getSingleFacultieFromDB(facultyId);
 
@@ -30,7 +30,7 @@ const getSingleFacultie = catchAsync(async (req, res, next) => {
 });
 
 // update student controller
-const updateFaculty = catchAsync(async (req, res, next) => {
+const updateFaculty = catchAsync(async (req, res) => {
   const { facultyId } = req.params;
   const { faculty } = req.body;
   const result = await FacultyServices.updateFacultyToDB(facultyId, faculty);
@@ -44,7 +44,7 @@ const updateFaculty = catchAsync(async (req, res, next) => {
 });
 
 // delete faculty
-const deleteFaculty = catchAsync(async (req, res, next) => {
+const deleteFaculty = catchAsync(async (req, res) => {
   const { facultyId } = req.params;
   const result = FacultyServices.deleteFacultyFromDB(facultyId);
 

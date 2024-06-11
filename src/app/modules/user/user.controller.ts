@@ -1,11 +1,10 @@
-import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { UserServices } from './user.service';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 
 // student create controller
-const createStudent = catchAsync(async (req, res, next) => {
+const createStudent = catchAsync(async (req, res) => {
   const { password, student: studetnData } = req.body;
   // const zodParseData = UserSchemaValidation.parse(studetnData);
   const result = await UserServices.createStudentToDB(password, studetnData);
@@ -18,7 +17,7 @@ const createStudent = catchAsync(async (req, res, next) => {
 });
 
 // create faculty controller
-const createFaculty = catchAsync(async (req, res, next) => {
+const createFaculty = catchAsync(async (req, res) => {
   const { password, faculty: studetnData } = req.body;
   // const zodParseData = UserSchemaValidation.parse(studetnData);
   const result = await UserServices.createFacultyToDB(password, studetnData);
@@ -32,7 +31,7 @@ const createFaculty = catchAsync(async (req, res, next) => {
 
 
 // create faculty controller
-const createAdmin = catchAsync(async (req, res, next) => {
+const createAdmin = catchAsync(async (req, res) => {
   const { password, admin: studetnData } = req.body;
   const result = await UserServices.createAdminToDB(password, studetnData);
   sendResponse(res, {

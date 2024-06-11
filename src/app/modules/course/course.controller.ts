@@ -4,7 +4,7 @@ import sendResponse from '../../utils/sendResponse';
 import { CourseServices } from './course.service';
 
 // create
-const createCourse = catchAsync(async (req, res, next) => {
+const createCourse = catchAsync(async (req, res) => {
   const result = await CourseServices.createCourseIntoDB(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -15,7 +15,7 @@ const createCourse = catchAsync(async (req, res, next) => {
 });
 
 // get all
-const getAllCourses = catchAsync(async (req, res, next) => {
+const getAllCourses = catchAsync(async (req, res) => {
   //   const query = req.query;
   const result = await CourseServices.getAllCourseFromDB(req.query);
 
@@ -28,7 +28,7 @@ const getAllCourses = catchAsync(async (req, res, next) => {
 });
 
 // get single
-const getSingleCourse = catchAsync(async (req, res, next) => {
+const getSingleCourse = catchAsync(async (req, res) => {
   const { courseId } = req.params;
   const result = await CourseServices.getSingleCourseFromDB(courseId);
 
@@ -41,7 +41,7 @@ const getSingleCourse = catchAsync(async (req, res, next) => {
 });
 
 // update student controller
-const updateCourse = catchAsync(async (req, res, next) => {
+const updateCourse = catchAsync(async (req, res) => {
   const { courseId } = req.params;
   const course = req.body;
   const result = await CourseServices.updateCourseToDB(courseId, course);
@@ -55,7 +55,7 @@ const updateCourse = catchAsync(async (req, res, next) => {
 });
 
 // delete
-const deleteCourse = catchAsync(async (req, res, next) => {
+const deleteCourse = catchAsync(async (req, res) => {
   const { courseId } = req.params;
   //   console.log(courseId);
   const result = await CourseServices.deleteCourseFromDB(courseId);
@@ -69,7 +69,7 @@ const deleteCourse = catchAsync(async (req, res, next) => {
 });
 
 // assigne faculty
-const assignFacultiesWithCourse = catchAsync(async (req, res, next) => {
+const assignFacultiesWithCourse = catchAsync(async (req, res) => {
   const { courseId } = req.params;
   const { faculties } = req.body;
   //   console.log(courseId);
@@ -84,7 +84,7 @@ const assignFacultiesWithCourse = catchAsync(async (req, res, next) => {
 });
 
 // remove faculty
-const removeFacultiesWithCourse = catchAsync(async (req, res, next) => {
+const removeFacultiesWithCourse = catchAsync(async (req, res) => {
   const { courseId } = req.params;
   const { faculties } = req.body;
   //   console.log(courseId);

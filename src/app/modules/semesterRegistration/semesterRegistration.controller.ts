@@ -4,7 +4,7 @@ import sendResponse from '../../utils/sendResponse';
 import { RemesterRegistraionServices } from './semesterRegistration.service';
 
 // crate
-const createRemesterRegistraion = catchAsync(async (req, res, next) => {
+const createRemesterRegistraion = catchAsync(async (req, res) => {
   const result = await RemesterRegistraionServices.createRemesterRegistraionToDB(req.body);
 
   sendResponse(res, {
@@ -16,7 +16,7 @@ const createRemesterRegistraion = catchAsync(async (req, res, next) => {
 });
 
 // get all
-const getAllRemesterRegistraion = catchAsync(async (req, res, next) => {
+const getAllRemesterRegistraion = catchAsync(async (req, res) => {
   const result = await RemesterRegistraionServices.getAllRemesterRegistraionFromDB(req.query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -27,7 +27,7 @@ const getAllRemesterRegistraion = catchAsync(async (req, res, next) => {
 });
 
 // sinlge
-const getSingleRemesterRegistraion = catchAsync(async (req, res, next) => {
+const getSingleRemesterRegistraion = catchAsync(async (req, res) => {
   const { id } = req.params;
 
   const result = await RemesterRegistraionServices.getSingleRemesterRegistraionFromDB(id);
@@ -40,7 +40,7 @@ const getSingleRemesterRegistraion = catchAsync(async (req, res, next) => {
 });
 
 // update
-const updateRemesterRegistraion = catchAsync(async (req, res, next) => {
+const updateRemesterRegistraion = catchAsync(async (req, res) => {
   const { id } = req.params;
   const updateAbleData = req.body;
   const result = await RemesterRegistraionServices.updateRemesterRegistraionToDB(

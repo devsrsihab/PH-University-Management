@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 
 import { model, Schema } from 'mongoose';
 import { TGurdian, TLocalGurdian, TStudent, TUserName, StudentModel } from './student.interface';

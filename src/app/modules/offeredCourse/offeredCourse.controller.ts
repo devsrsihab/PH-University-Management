@@ -4,7 +4,7 @@ import sendResponse from '../../utils/sendResponse';
 import { OfferedCourseServices } from './offeredCourse.service';
 
 // crate
-const createOfferedCourse = catchAsync(async (req, res, next) => {
+const createOfferedCourse = catchAsync(async (req, res) => {
   const result = await OfferedCourseServices.createOfferedCourseToDB(req.body);
 
   sendResponse(res, {
@@ -16,7 +16,7 @@ const createOfferedCourse = catchAsync(async (req, res, next) => {
 });
 
 // get all
-const getAllOfferedCourse = catchAsync(async (req, res, next) => {
+const getAllOfferedCourse = catchAsync(async (req, res) => {
   const result = await OfferedCourseServices.getAllOfferedCourseFromDB(req.query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -27,7 +27,7 @@ const getAllOfferedCourse = catchAsync(async (req, res, next) => {
 });
 
 // sinlge
-const getSingleOfferedCourse = catchAsync(async (req, res, next) => {
+const getSingleOfferedCourse = catchAsync(async (req, res) => {
   const { id } = req.params;
 
   const result = await OfferedCourseServices.getSingleOfferedCourseFromDB(id);
@@ -40,7 +40,7 @@ const getSingleOfferedCourse = catchAsync(async (req, res, next) => {
 });
 
 // update
-const updateOfferedCourse = catchAsync(async (req, res, next) => {
+const updateOfferedCourse = catchAsync(async (req, res) => {
   const { id } = req.params;
   const updateAbleData = req.body;
   const result = await OfferedCourseServices.updateOfferedCourseToDB(id, updateAbleData);

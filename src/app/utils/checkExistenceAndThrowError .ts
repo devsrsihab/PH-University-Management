@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Model, Types } from 'mongoose';
 import AppError from '../errors/appError';
 import httpStatus from 'http-status';

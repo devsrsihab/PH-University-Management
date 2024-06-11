@@ -4,7 +4,7 @@ import sendResponse from '../../utils/sendResponse';
 import { AcademicDepartmentServices } from './academicDepartment.service';
 
 // crate acamdemic Department controller
-const createAcademicDepartment = catchAsync(async (req, res, next) => {
+const createAcademicDepartment = catchAsync(async (req, res) => {
   const result = await AcademicDepartmentServices.createAcademicDepartmentToDB(req.body);
 
   sendResponse(res, {
@@ -16,7 +16,7 @@ const createAcademicDepartment = catchAsync(async (req, res, next) => {
 });
 
 // get all controller
-const getAllAcademicDepartment = catchAsync(async (req, res, next) => {
+const getAllAcademicDepartment = catchAsync(async (req, res) => {
   const result = await AcademicDepartmentServices.getAllAcademicDepartmentsFromDB();
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -27,7 +27,7 @@ const getAllAcademicDepartment = catchAsync(async (req, res, next) => {
 });
 
 // find a sinlge academic Department
-const getSingleAcademicDepartment = catchAsync(async (req, res, next) => {
+const getSingleAcademicDepartment = catchAsync(async (req, res) => {
   const { departmentId } = req.params;
 
   const result = await AcademicDepartmentServices.getSingleAcademicDepartmentFromDB(departmentId);
@@ -40,7 +40,7 @@ const getSingleAcademicDepartment = catchAsync(async (req, res, next) => {
 });
 
 // update the Departments
-const updateAcademicDepartment = catchAsync(async (req, res, next) => {
+const updateAcademicDepartment = catchAsync(async (req, res) => {
   const { departmentId } = req.params;
   const updateAbleData = req.body;
   const result = await AcademicDepartmentServices.updateAcademicDepartmentToDB(

@@ -4,8 +4,9 @@ import sendResponse from '../../utils/sendResponse';
 import { AdminServices } from './admin.service';
 
 // get all getAdmin conroller
-const getAllAdmins = catchAsync(async (req, res, next) => {
+const getAllAdmins = catchAsync(async (req, res) => {
   const query = req.query;
+  // console.log('testing', req.user)
   const result = await AdminServices.getAllAdminsFromDB(query);
 
   sendResponse(res, {
@@ -17,7 +18,7 @@ const getAllAdmins = catchAsync(async (req, res, next) => {
 });
 
 // get single admin controller
-const getSingleFacultie = catchAsync(async (req, res, next) => {
+const getSingleFacultie = catchAsync(async (req, res) => {
   const { adminId } = req.params;
   const result = await AdminServices.getSingleAdminFromDB(adminId);
 
@@ -30,7 +31,7 @@ const getSingleFacultie = catchAsync(async (req, res, next) => {
 });
 
 // update student controller
-const updateAdmin = catchAsync(async (req, res, next) => {
+const updateAdmin = catchAsync(async (req, res) => {
   const { adminId } = req.params;
   const { admin } = req.body;
   const result = await AdminServices.updateAdminToDB(adminId, admin);
@@ -44,7 +45,7 @@ const updateAdmin = catchAsync(async (req, res, next) => {
 });
 
 // delete admin
-const deleteAdmin = catchAsync(async (req, res, next) => {
+const deleteAdmin = catchAsync(async (req, res) => {
   const { adminId } = req.params;
   const result = AdminServices.deleteAdminFromDB(adminId);
 

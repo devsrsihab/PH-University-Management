@@ -4,7 +4,7 @@ import sendResponse from '../../utils/sendResponse';
 import { Services } from './starter.service';
 
 // create
-const create = catchAsync(async (req, res, next) => {
+const create = catchAsync(async (req, res) => {
   const result = await Services.createToDB(req.body);
 
   sendResponse(res, {
@@ -16,7 +16,7 @@ const create = catchAsync(async (req, res, next) => {
 });
 
 // get all
-const getAll = catchAsync(async (req, res, next) => {
+const getAll = catchAsync(async (req, res) => {
   const result = await Services.getAllFromDB();
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -27,7 +27,7 @@ const getAll = catchAsync(async (req, res, next) => {
 });
 
 // single
-const getSingle = catchAsync(async (req, res, next) => {
+const getSingle = catchAsync(async (req, res) => {
   const { facultyId } = req.params;
 
   const result = await Services.getSingleFromDB(facultyId);
@@ -40,7 +40,7 @@ const getSingle = catchAsync(async (req, res, next) => {
 });
 
 // update
-const update = catchAsync(async (req, res, next) => {
+const update = catchAsync(async (req, res) => {
   const { facultyId } = req.params;
   const updateAbleData = req.body;
   const result = await Services.updateToDB(facultyId, updateAbleData);
