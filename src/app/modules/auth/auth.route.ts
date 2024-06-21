@@ -7,12 +7,14 @@ import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
-// create
+// login
 router.post(
   '/login',
   validateRequest(AuthValidation.loginValidatonSchema),
   AuthControllers.loginUser,
 );
+
+
 // passwrod change
 router.post(
   '/change-password',
