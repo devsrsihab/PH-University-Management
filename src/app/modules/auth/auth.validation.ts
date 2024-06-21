@@ -1,10 +1,13 @@
 import { z } from 'zod';
 
-// login validation 
+// login validation
 const loginValidatonSchema = z.object({
   body: z.object({
-    id: z.string({required_error: 'id is required', invalid_type_error: 'id must be string'}),
-    password: z.string({required_error: 'password is required', invalid_type_error: 'password must be string'}),
+    id: z.string({ required_error: 'id is required', invalid_type_error: 'id must be string' }),
+    password: z.string({
+      required_error: 'password is required',
+      invalid_type_error: 'password must be string',
+    }),
   }),
 });
 
@@ -22,16 +25,28 @@ const changePasswordValidatonSchema = z.object({
   }),
 });
 
-// refresh token 
+// refresh token
 const refreshTokenValidatonSchema = z.object({
   cookies: z.object({
-    refreshToken: z.string({required_error: 'refreshToken is required', invalid_type_error: 'refreshToken must be string'}),
-  })
-})
+    refreshToken: z.string({
+      required_error: 'refreshToken is required',
+      invalid_type_error: 'refreshToken must be string',
+    }),
+  }),
+});
 
+// forget password
+const forgetPasswordValidationSchema = z.object({
+  body: z.object({
+    id: z.string({
+      required_error: 'User id is required',
+    }),
+  }),
+});
 
 export const AuthValidation = {
   loginValidatonSchema,
   changePasswordValidatonSchema,
-  refreshTokenValidatonSchema
+  refreshTokenValidatonSchema,
+  forgetPasswordValidationSchema,
 };

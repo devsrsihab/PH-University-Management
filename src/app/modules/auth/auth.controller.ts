@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
@@ -6,7 +7,7 @@ import config from '../../config';
 
 // create
 const loginUser = catchAsync(async (req, res) => {
-  const result = await AuthServices.loginUser(req.body);
+  const result: any = await AuthServices.loginUser(req.body);
   const { refreshToken, accessToken, neetPassWord } = result;
 
   // save refresh token in cookie
@@ -51,8 +52,21 @@ const refreshToken = catchAsync(async (req, res) => {
   });
 });
 
+// forget password
+const forgetPassword = catchAsync(async (req, res) => {
+  const { id } = req.body;
+  const result = await AuthServices.forgetPassword(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Password Reset Link generated successfully',
+    data: result,
+  });
+})
+
 export const AuthControllers = {
   loginUser,
   changePassword,
   refreshToken,
+  forgetPassword,
 };
