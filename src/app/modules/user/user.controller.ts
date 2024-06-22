@@ -2,7 +2,6 @@ import { UserServices } from './user.service';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
-import AppError from '../../errors/appError';
 
 // student create controller
 const createStudent = catchAsync(async (req, res) => {
@@ -44,14 +43,9 @@ const createAdmin = catchAsync(async (req, res) => {
 
 // get me controller
 const getMe = catchAsync(async (req, res) => {
-  const token = req.headers.authorization;
+  const {userId, role} = req.user;
 
-  // if token is not exist
-  if (!token) {
-    throw new AppError(httpStatus.NOT_FOUND, 'You are token not found');
-  }
-
-  const result = await UserServices.getMeFromDB(token);
+  const result = await UserServices.getMeFromDB(userId, role);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

@@ -14,8 +14,6 @@ import { TFaculty } from '../faculty/faculty.interface';
 import { Faculty } from '../faculty/faculty.model';
 import { TAdmin } from '../admin/admin.interface';
 import { Admin } from '../admin/admin.model';
-import { verifyToken } from '../auth/auth.utils';
-import { JwtPayload } from 'jsonwebtoken';
 
 // create student
 const createStudentToDB = async (password: string, payload: TStudent) => {
@@ -185,9 +183,7 @@ const createAdminToDB = async (password: string, payload: TAdmin) => {
 };
 
 // get me servcies
-const getMeFromDB = async (token: string) => {
-  const decoded = verifyToken(token, config.jwt_access_secret as string) as JwtPayload;
-  const { userId, role } = decoded;
+const getMeFromDB = async (userId: string, role: string) => {
   let result = null;
 
   // if user
