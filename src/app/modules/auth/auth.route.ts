@@ -14,7 +14,6 @@ router.post(
   AuthControllers.loginUser,
 );
 
-
 // passwrod change
 router.post(
   '/change-password',
@@ -22,6 +21,7 @@ router.post(
   validateRequest(AuthValidation.changePasswordValidatonSchema),
   AuthControllers.changePassword,
 );
+
 // refresh token 
 router.post(
   '/refresh-token',
@@ -34,6 +34,13 @@ router.post(
   '/forget-password',
   validateRequest(AuthValidation.forgetPasswordValidationSchema),
   AuthControllers.forgetPassword,
+);
+
+// reset passwrod
+router.post(
+  '/reset-password',
+  validateRequest(AuthValidation.resetPasswordValidationSchema),
+  AuthControllers.resetPassword,
 );
 
 
