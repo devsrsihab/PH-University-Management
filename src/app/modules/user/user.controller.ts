@@ -6,7 +6,6 @@ import catchAsync from '../../utils/catchAsync';
 // student create controller
 const createStudent = catchAsync(async (req, res) => {
   const { password, student: studetnData } = req.body;
-  // const zodParseData = UserSchemaValidation.parse(studetnData);
   const result = await UserServices.createStudentToDB(password, studetnData);
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -19,7 +18,6 @@ const createStudent = catchAsync(async (req, res) => {
 // create faculty controller
 const createFaculty = catchAsync(async (req, res) => {
   const { password, faculty: studetnData } = req.body;
-  // const zodParseData = UserSchemaValidation.parse(studetnData);
   const result = await UserServices.createFacultyToDB(password, studetnData);
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -43,7 +41,7 @@ const createAdmin = catchAsync(async (req, res) => {
 
 // get me controller
 const getMe = catchAsync(async (req, res) => {
-  const {userId, role} = req.user;
+  const { userId, role } = req.user;
 
   const result = await UserServices.getMeFromDB(userId, role);
   sendResponse(res, {
@@ -54,9 +52,23 @@ const getMe = catchAsync(async (req, res) => {
   });
 });
 
+// change status
+const changeStatus = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await UserServices.changeStatus(id, req.body);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Status change successfully',
+      data: result,
+    });
+});
+
 export const UserController = {
   createStudent,
   createFaculty,
   createAdmin,
   getMe,
+  changeStatus,
 };

@@ -4,7 +4,7 @@ import AppError from '../../errors/appError';
 import httpStatus from 'http-status';
 import { User } from '../user/user.model';
 import { TStudent } from './student.interface';
-import { searchAbleFields } from './student.constant';
+import { studentSearchableFields } from './student.constant';
 import QueryBuilder from '../../builder/QueryBuilder';
 
 // get all students
@@ -20,14 +20,18 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
       }),
     query,
   )
-    .search(searchAbleFields)
+    .search(studentSearchableFields)
     .filter()
     .sort()
     .paginate()
     .fields();
 
   const result = await studentQuery.modelQuery;
-  return result;
+  const meta = await studentQuery.countTotal();
+  return {
+    meta,
+    result,
+  };
 };
 
 // get single student
@@ -43,7 +47,6 @@ const getSingleStudentFromDB = async (id: string) => {
     });
   return result;
 };
-
 
 // update student
 const updateStudentToDB = async (id: string, payload: Partial<TStudent>) => {

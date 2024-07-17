@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
-import { searchAbleFields } from './admin.constant';
+import { AdminSearchableFields } from './admin.constant';
 import AppError from '../../errors/appError';
 import httpStatus from 'http-status';
 import { User } from '../user/user.model';
@@ -10,14 +10,18 @@ import { TAdmin } from './admin.interface';
 // get all admins
 const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
   const adminQuery = new QueryBuilder(Admin.find().populate('user'), query)
-    .search(searchAbleFields)
+    .search(AdminSearchableFields)
     .filter()
     .sort()
     .paginate()
     .fields();
 
   const result = await adminQuery.modelQuery;
-  return result;
+  const meta = await adminQuery.countTotal();
+  return {
+    result,
+    meta,
+  };
 };
 
 // get single student

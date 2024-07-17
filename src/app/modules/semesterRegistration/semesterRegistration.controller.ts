@@ -17,13 +17,14 @@ const createRemesterRegistraion = catchAsync(async (req, res) => {
 
 // get all
 const getAllRemesterRegistraion = catchAsync(async (req, res) => {
-  const result = await RemesterRegistraionServices.getAllRemesterRegistraionFromDB(req.query);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Remester Registraion Retrive successfully',
-    data: result,
-  });
+  const result = await RemesterRegistraionServices.getAllSemesterRegistraionFromDB(req.query);
+ sendResponse(res, {
+   statusCode: httpStatus.OK,
+   success: true,
+   message: 'Remester Registraion Retrive successfully',
+   meta: result.meta,
+   data: result.result,
+ });
 });
 
 // sinlge

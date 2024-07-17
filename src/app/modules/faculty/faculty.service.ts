@@ -1,12 +1,11 @@
-import mongoose from "mongoose";
-import QueryBuilder from "../../builder/QueryBuilder";
-import { searchAbleFields } from "./faculty.constant";
-import { TFaculty } from "./faculty.interface";
+import mongoose from 'mongoose';
+import QueryBuilder from '../../builder/QueryBuilder';
+import { FacultySearchableFields } from './faculty.constant';
+import { TFaculty } from './faculty.interface';
 import { Faculty } from './faculty.model';
-import AppError from "../../errors/appError";
-import httpStatus from "http-status";
-import { User } from "../user/user.model";
-
+import AppError from '../../errors/appError';
+import httpStatus from 'http-status';
+import { User } from '../user/user.model';
 
 // get all faculties
 const getAllFacultiesFromDB = async (query: Record<string, unknown>) => {
@@ -21,14 +20,18 @@ const getAllFacultiesFromDB = async (query: Record<string, unknown>) => {
       }),
     query,
   )
-    .search(searchAbleFields)
+    .search(FacultySearchableFields)
     .filter()
     .sort()
     .paginate()
     .fields();
 
   const result = await facultyQuery.modelQuery;
-  return result;
+  const meta = await facultyQuery.countTotal();
+  return {
+    result,
+    meta,
+  };
 };
 
 // get single student
@@ -56,7 +59,6 @@ const updateFacultyToDB = async (id: string, payload: Partial<TFaculty>) => {
       modifiedUpdatedData[`name.${key}`] = value;
     }
   }
-
 
   const result = await Faculty.findOneAndUpdate({ id }, modifiedUpdatedData, {
     new: true,
@@ -100,7 +102,7 @@ const deleteFacultyFromDB = async (id: string) => {
   } catch (error) {
     await session.abortTransaction();
     await session.endSession();
-    console.log(error)
+    console.log(error);
     throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete Student');
   }
 };

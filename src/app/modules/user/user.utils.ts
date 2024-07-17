@@ -69,8 +69,6 @@ const findLastFacultyId = async () => {
   return lastFaculty?.id ? lastFaculty.id : undefined;
 };
 
-
-
 // userData.id = generateRandomId();
 export const generatFacultyId = async () => {
   // first time 0
@@ -78,19 +76,15 @@ export const generatFacultyId = async () => {
   // last student id
   const lastFacultyId = await findLastFacultyId(); // 2030 01 0001
 
-
-  if (
-    lastFacultyId
-  ) {
-    currentid = lastFacultyId // if exist last faculty the  the is assign to currentid
+  if (lastFacultyId) {
+    currentid = lastFacultyId; // if exist last faculty the  the is assign to currentid
   }
 
   let incrementId = (Number(currentid.substring(2)) + 1).toString().padStart(4, '0');
   incrementId = `F-${incrementId}`;
-  console.log(incrementId)
+  console.log(incrementId);
   return incrementId; // F-0001++
 };
-
 
 //==============Admin Id Generate===============
 // last lastFaculty
@@ -113,8 +107,6 @@ const findLastAdminId = async () => {
   return lastAdmin?.id ? lastAdmin.id : undefined;
 };
 
-
-
 // userData.id = generateRandomId();
 export const generatAdminId = async () => {
   // first time 0
@@ -122,11 +114,8 @@ export const generatAdminId = async () => {
   // last student id
   const lastAdminId = await findLastAdminId(); //A-0001
 
-
-  if (
-    lastAdminId
-  ) {
-    currentid = lastAdminId // if exist last faculty the  the is assign to currentid
+  if (lastAdminId) {
+    currentid = lastAdminId; // if exist last faculty the  the is assign to currentid
   }
 
   let incrementId = (Number(currentid.substring(2)) + 1).toString().padStart(4, '0');

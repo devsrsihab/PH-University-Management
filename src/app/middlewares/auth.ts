@@ -27,7 +27,12 @@ const auth = (...requiredUserRole: TUserRole[]) => {
     }
 
     // Verify the token
-    const decoded = jwt.verify(token, config.jwt_access_secret as string) as JwtPayload;
+    let decoded;
+    try {
+      decoded = jwt.verify(token, config.jwt_access_secret as string) as JwtPayload;
+    } catch (error) {
+      throw new AppError(httpStatus.UNAUTHORIZED, 'Unauthorized token');
+    }
 
     // user role checking
     const { role, userId, iat } = decoded as JwtPayload;
@@ -53,7 +58,7 @@ const auth = (...requiredUserRole: TUserRole[]) => {
     // check the user issed password or jwt issued  time
     if (
       user.passwordChangedAt &&
-      await User.isJWTIssuedBeforePasswordChanged(user.passwordChangedAt, iat as number)
+      (await User.isJWTIssuedBeforePasswordChanged(user.passwordChangedAt, iat as number))
     ) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized');
     }

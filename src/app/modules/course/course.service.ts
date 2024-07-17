@@ -21,7 +21,11 @@ const getAllCourseFromDB = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
   const result = await courseQuery.modelQuery;
-  return result;
+  const meta = await courseQuery.countTotal();
+  return {
+    meta,
+    result,
+  };
 };
 
 // get single
@@ -123,7 +127,7 @@ const removeFacultyWithCoursetoDB = async (id: string, payload: Partial<TCourseF
     {
       $pull: { faculties: { $in: payload } },
     },
-    { new: true }
+    { new: true },
   );
   return result;
 };

@@ -1,1 +1,9 @@
-export const searchAbleFields = ['email', 'name.firstName', 'name.lstName', 'name.lastName'];
+export const FacultySearchableFields = [
+  'email',
+  'id',
+  'contactNo',
+  'emergencyContactNo',
+  'name.firstName',
+  'name.lastName',
+  'name.middleName',
+];

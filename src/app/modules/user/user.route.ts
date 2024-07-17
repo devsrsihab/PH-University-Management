@@ -6,6 +6,7 @@ import { FacultyValidations } from '../faculty/faculty.validation';
 import { AdminValidations } from '../admin/admin.validation';
 import auth from '../../middlewares/auth';
 import { USER_ROLE } from './user.constant';
+import { UserValidations } from './user.validation';
 
 const router = express.Router();
 
@@ -38,5 +39,14 @@ router.get(
   auth(USER_ROLE.admin, USER_ROLE.student, USER_ROLE.faculty),
   UserController.getMe,
 );
+
+// change status
+router.patch(
+  '/change-status/:id',
+  auth(USER_ROLE.admin),
+  validateRequest(UserValidations.changeStatusValidationSchema),
+  UserController.changeStatus,
+);
+
 
 export const UserRoute = router;

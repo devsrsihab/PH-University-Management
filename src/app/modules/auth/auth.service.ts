@@ -118,7 +118,9 @@ const refreshToken = async (token: string) => {
   }
 
   // Verify the token
+  console.log('hello');
   const decoded = jwt.verify(token, config.jwt_refresh_secret as string) as JwtPayload;
+
 
   // user role checking
   const { userId, iat } = decoded as JwtPayload;

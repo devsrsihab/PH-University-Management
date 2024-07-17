@@ -1,3 +1,5 @@
+import QueryBuilder from '../../builder/QueryBuilder';
+import { AcademicSemesterSearchableFields } from '../academicSemester/academicSemester.contants';
 import { TAcademicFaculty } from './academicFaculty.interface';
 import { AcademicFaculty } from './academicFaculty.model';
 
@@ -8,9 +10,21 @@ const createAcademicFacultyToDB = async (payload: TAcademicFaculty) => {
 };
 
 // get all all semesters
-const getAllAcademicFacultysFromDB = async () => {
-  const result = await AcademicFaculty.find();
-  return result;
+const getAllAcademicFacultysFromDB = async (query: Record<string, unknown>) => {
+  const academicFacultyQuery = new QueryBuilder(AcademicFaculty.find(), query)
+    .search(AcademicSemesterSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await academicFacultyQuery.modelQuery;
+  const meta = await academicFacultyQuery.countTotal();
+
+  return {
+    meta,
+    result,
+  };
 };
 
 // get single semesters

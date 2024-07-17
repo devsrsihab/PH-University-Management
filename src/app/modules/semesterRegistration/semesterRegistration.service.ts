@@ -44,7 +44,7 @@ const createRemesterRegistraionToDB = async (payload: TSemesterRegistration) => 
 };
 
 // get all all semesters
-const getAllRemesterRegistraionFromDB = async (query: Record<string, unknown>) => {
+const getAllSemesterRegistraionFromDB = async (query: Record<string, unknown>) => {
   const semestarRegistrationQuery = new QueryBuilder(
     SemesterRegistration.find().populate('academicSemester'),
     query,
@@ -54,8 +54,13 @@ const getAllRemesterRegistraionFromDB = async (query: Record<string, unknown>) =
     .paginate()
     .fields();
 
-  const result = semestarRegistrationQuery.modelQuery;
-  return result;
+  const result = await semestarRegistrationQuery.modelQuery;
+  const meta = await semestarRegistrationQuery.countTotal();
+
+  return {
+    meta,
+    result,
+  };
 };
 
 // get single semesters
@@ -118,7 +123,7 @@ const updateRemesterRegistraionToDB = async (
 
 export const RemesterRegistraionServices = {
   createRemesterRegistraionToDB,
-  getAllRemesterRegistraionFromDB,
+  getAllSemesterRegistraionFromDB,
   getSingleRemesterRegistraionFromDB,
   updateRemesterRegistraionToDB,
 };

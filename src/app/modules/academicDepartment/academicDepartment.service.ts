@@ -1,3 +1,5 @@
+import QueryBuilder from '../../builder/QueryBuilder';
+import { AcademicSemesterSearchableFields } from '../academicSemester/academicSemester.contants';
 import { TAcademicDepartment } from './academicDepartment.interface';
 import { AcademicDepartment } from './academicDepartment.model';
 
@@ -8,9 +10,24 @@ const createAcademicDepartmentToDB = async (payload: TAcademicDepartment) => {
 };
 
 // get all all semesters
-const getAllAcademicDepartmentsFromDB = async () => {
-  const result = await AcademicDepartment.find().populate('academicFaculty');
-  return result;
+const getAllAcademicDepartmentsFromDB = async (query: Record<string, unknown>) => {
+  const academicDepartmentQuery = new QueryBuilder(
+    AcademicDepartment.find().populate('academicFaculty'),
+    query,
+  )
+    .search(AcademicSemesterSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await academicDepartmentQuery.modelQuery;
+  const meta = await academicDepartmentQuery.countTotal();
+
+  return {
+    result,
+    meta,
+  };
 };
 
 // get single semesters
