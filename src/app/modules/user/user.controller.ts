@@ -6,7 +6,7 @@ import catchAsync from '../../utils/catchAsync';
 // student create controller
 const createStudent = catchAsync(async (req, res) => {
   const { password, student: studetnData } = req.body;
-  const result = await UserServices.createStudentToDB(password, studetnData);
+  const result = await UserServices.createStudentToDB(req.file, password, studetnData);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -57,12 +57,12 @@ const changeStatus = catchAsync(async (req, res) => {
   const { id } = req.params;
 
   const result = await UserServices.changeStatus(id, req.body);
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Status change successfully',
-      data: result,
-    });
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Status change successfully',
+    data: result,
+  });
 });
 
 export const UserController = {

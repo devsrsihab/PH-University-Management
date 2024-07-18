@@ -7,7 +7,7 @@ const router = express.Router();
 
 // create academic semester
 router.post(
-  '/create-academic-faculty',
+  '/',
   validateRequest(AcademicFacultyValidation.CreateAcademicFacultySchemaValidation),
   AcademicFacultyControllers.createAcademicFaculty,
 );

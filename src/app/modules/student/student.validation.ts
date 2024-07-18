@@ -26,7 +26,7 @@ const LocalGuardianValidationSchema = z.object({
 // Define Zod schema for the main object
 const createStudentValidationSchema = z.object({
   body: z.object({
-    password: z.string().min(8).max(30),
+    password: z.string().min(8).max(30).optional(),
     student: z.object({
       name: UserNameValidationSchema,
       gender: z.enum(['male', 'female', 'other']),
@@ -41,33 +41,35 @@ const createStudentValidationSchema = z.object({
       permanentAddress: z.string().min(1),
       guardian: GuardianValidationSchema,
       localGurdian: z.optional(LocalGuardianValidationSchema),
-      profileImg: z.string().optional(),
     }),
   }),
 });
 
 // Define Zod schema for the update object
 const updateStudentValidationSchema = z.object({
-  body: z.object({
-    student: z.object({
-      name: UserNameValidationSchema.partial(),
-      gender: z.enum(['male', 'female', 'other']).optional(),
-      dateOfBirth: z.string().optional(), // Validate date format as YYYY-MM-DD
-      admissionSemester: z.string().optional(),
-      academicDepartment: z.string().optional(),
-      email: z.string().email().optional(),
-      contactNo: z.string().min(10).optional(), // Ensure minimum 10 characters for phone number
-      emergencyContact: z.string().min(10).optional(), // Ensure minimum 10 characters for phone number
-      bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),
-      presentAddress: z.string().min(1).optional(),
-      permanentAddress: z.string().min(1).optional(),
-      guardian: GuardianValidationSchema.partial(),
-      localGurdian: LocalGuardianValidationSchema.optional(), // Allow localGuardian to be optional
-      profileImg: z.string().optional(),
-    }).partial(), // Make all student fields optional
-  }).partial(), // Make all body fields optional
+  body: z
+    .object({
+      student: z
+        .object({
+          name: UserNameValidationSchema.partial(),
+          gender: z.enum(['male', 'female', 'other']).optional(),
+          dateOfBirth: z.string().optional(), // Validate date format as YYYY-MM-DD
+          admissionSemester: z.string().optional(),
+          academicDepartment: z.string().optional(),
+          email: z.string().email().optional(),
+          contactNo: z.string().min(10).optional(), // Ensure minimum 10 characters for phone number
+          emergencyContact: z.string().min(10).optional(), // Ensure minimum 10 characters for phone number
+          bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),
+          presentAddress: z.string().min(1).optional(),
+          permanentAddress: z.string().min(1).optional(),
+          guardian: GuardianValidationSchema.partial(),
+          localGurdian: LocalGuardianValidationSchema.optional(), // Allow localGuardian to be optional
+          profileImg: z.string().optional(),
+        })
+        .partial(), // Make all student fields optional
+    })
+    .partial(), // Make all body fields optional
 });
-
 
 export const StudentValidations = {
   createStudentValidationSchema,
