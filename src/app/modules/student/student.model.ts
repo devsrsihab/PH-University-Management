@@ -1,4 +1,3 @@
-
 import { model, Schema } from 'mongoose';
 import { TGurdian, TLocalGurdian, TStudent, TUserName, StudentModel } from './student.interface';
 
@@ -134,6 +133,10 @@ const studentSchema = new Schema<TStudent, StudentModel>(
   },
 );
 
+//virtual
+studentSchema.virtual('fullName').get(function () {
+  return this?.name?.firstName + this?.name?.middleName + this?.name?.lastName;
+});
 
 // query middleware show only where isDelete false
 studentSchema.pre('find', function (next) {
