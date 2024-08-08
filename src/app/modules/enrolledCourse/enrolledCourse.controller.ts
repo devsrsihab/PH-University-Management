@@ -15,6 +15,20 @@ const createEnrolledCourse = catchAsync(async (req, res) => {
   });
 });
 
+// update enrolled course
+const updateEnrolledCourseMarks = catchAsync(async (req, res) => {
+
+  const facultyId = req.user.userId;
+  const result = await EnrolledCourseServices.updateEnrolledCourseMarkToDB(facultyId, req.body);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Marks updated successfully ',
+      data: result,
+    });
+})
+
 export const EnrolledCourseControllers = {
   createEnrolledCourse,
+  updateEnrolledCourseMarks,
 };
